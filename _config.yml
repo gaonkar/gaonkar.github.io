@@ -1,0 +1,28 @@
+# Site settings
+title: My GitHub Pages Blog
+description: A blog about coding and technology
+url: "https://username.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# Collections for tags
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: ""
+      type: tags
+    values:
+      layout: tag

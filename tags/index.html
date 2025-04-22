@@ -1,0 +1,18 @@
+---
+layout: default
+title: All Tags
+---
+
+<div class="tags-page">
+  <h1>All Tags</h1>
+  
+  {% assign tags = site.posts | map: 'tags' | flatten | uniq | sort %}
+  
+  <div class="tag-cloud">
+    {% for tag in tags %}
+      <a href="{{ site.baseurl }}/tags/{{ tag | slugify }}/" class="tag">
+        {{ tag }} ({{ site.posts | where_exp: "post", "post.tags contains tag" | size }})
+      </a>
+    {% endfor %}
+  </div>
+</div>
