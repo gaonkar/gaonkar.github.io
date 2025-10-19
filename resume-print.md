@@ -1,9 +1,7 @@
 ---
-layout: page
+layout: resume-print
 title: Resume
 ---
-
-[Printer Friendly Version](/resume-print)
 
 ### Work Experience
 
@@ -73,3 +71,7 @@ title: Resume
 *PhD, Computer Science* (2003 - 2008)
 
 *   **Thesis:** [Exploring Design Configurations of System Models: From Simultaneous Simulation to Search Heuristics.](https://www.perform.illinois.edu/Papers/USAN_papers/08GAO02.pdf)
+
+---
+
+[GitHub](https://github.com/gaonkar) | [LinkedIn](https://www.linkedin.com/in/shravangaonkar/)

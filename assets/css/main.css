@@ -203,3 +203,26 @@ footer {
   background-color: var(--footer-bg);
   border-top: 1px solid var(--border-color);
 }
+
+/* Print-friendly styles */
+@media print {
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.4;
+    color: #000;
+    background-color: #fff;
+  }
+
+  header, footer, .theme-switch-wrapper {
+    display: none;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}
