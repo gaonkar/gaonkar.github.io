@@ -1,11 +1,11 @@
 ---
-layout: default
+layout: post
 title: Creative Destruction of Search Enshittification
 ---
 
 # Creative Destruction of Search Enshittification
 
-![Snake Eating Its Tail](link_to_your_image) <!-- Replace with image link -->
+![Snake Eating Its Tail](/assets/images/2025-04-22-image-1.jpg)
 
 ## The Cycle of Creative Destruction in Search
 
