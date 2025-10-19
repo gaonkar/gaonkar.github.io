@@ -20,7 +20,7 @@ title: Publications
 
 * 2020 [Bandit-based Run-time Adaptation of Cache Replacement Policies in Content Management Systems](https://ieeexplore.ieee.org/document/9394359)
 * 2012 Cooperative Storage-Level De-duplication for I/O Reduction in Virtualized Data Centers [MASCOTS]
-* 2008 Micro-Blog: Sharing and Querying Content Through Mobile Phones and Social Participation [MOBISYS]
+* 2008 [Micro-Blog: Sharing and Querying Content Through Mobile Phones and Social Participation](https://dl.acm.org/doi/10.1145/1378600.1378620) [MOBISYS]
 * 2007 [Designing Dependable Storage Solutions for Shared Application Environments.](https://www.perform.illinois.edu/Papers/USAN_papers/07GAO02.pdf) [IEEE Transaction in Dependable and Secure Computing.]
 * 2007 [Designing a Rate-Based Transport Protocol for Wired-Wireless Networks](https://www.perform.illinois.edu/Papers/USAN_papers/07GAO04.pdf) [IEEE Broadnets]
 * 2006 Data Analysis and Visualization within the Möbius Modeling Environment [QEST @ Riverside, CA]
