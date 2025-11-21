@@ -9,17 +9,23 @@ title: Resume
 
 **Airbnb** (Dec 2022 - Present)
 
-* 2025 - ML Infrastructure
+* 2025 - ML Infrastructure: Inference 
+    *  Designed and orchestrated(WIP) multi-cluster Blue-Green migration for 500+ ml models with 0 downtime
+    *  Engineered adaptive failure over strategy for migration with minimal client side latency impact 
+
 * 2023 - 2024: Storage Infrastructure
-    * [From Static Rate Limiting to Adaptive Traffic Management in Airbnb's Key-Value Store](https://medium.com/airbnb-engineering/from-static-rate-limiting-to-adaptive-traffic-management-in-airbnbs-key-value-store-29362764e5c2)
-    * [Building a Next-Generation Key-Value Store at Airbnb](https://medium.com/airbnb-engineering/building-a-next-generation-key-value-store-at-airbnb-0de8465ba354)
+  * [From Static Rate Limiting to Adaptive Traffic Management in Airbnb's Key-Value Store](https://medium.com/airbnb-engineering/from-static-rate-limiting-to-adaptive-traffic-management-in-airbnbs-key-value-store-29362764e5c2)
+    - Architected adaptive rate limiter handling 10M+ QPS from thousands of clients. 
+    - Reduced overload cascades and improved tail latency via hotkey detection with request coalescing. 
+  * [Building a Next-Generation Key-Value Store at Airbnb](https://medium.com/airbnb-engineering/building-a-next-generation-key-value-store-at-airbnb-0de8465ba354)
+    - Migrated 1+ petabyte of KV store across thousands of tables with zero downtime.
 
 ---
 
 **Stripe** (Dec 2021 - Nov 2022)
 
-* ChangeData Capture from Online DB to Data Warehouse (Parquet S3 objects)
-* Enable and optimize data-layout to improve fraud detection, reconciliation, and analytics
+* TL for ChangeData Capture from Online DB to Data Warehouse (Parquet S3 objects)
+* Enabled and optimize data-layout to improve fraud detection, reconciliation, and analytics from days to hours
 
 ---
 
