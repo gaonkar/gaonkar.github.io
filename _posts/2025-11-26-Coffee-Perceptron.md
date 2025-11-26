@@ -1,8 +1,8 @@
-# Walkthrough: The Differentiable Perceptron (Sigmoid Neuron coffee decision)
+# Manual Walkthrough: The Differentiable Perceptron (Sigmoid Neuron)
 
 ## Introduction: What You Will Learn
 
-This tutorial bridges the gap between abstract neural network theory and
+This tutorial bridges the gap betwe meen abstract neural network theory and
 concrete implementation. By dissecting the simplest differentiable unit of Deep
 Learning—the Sigmoid Neuron—we will manually trace the path of "learning" from a
 raw error signal back to a specific weight update.
@@ -34,15 +34,11 @@ decisions reasonably well.
 
 We have 3 examples (rows). Each has 2 features (columns).
 
-| **Scenario** | **Feature 1: Caffeine ($x_1$)** | **Feature 2: Price ($x_2$)**
-| **Decision ($y$)** | **Reasoning** | 
+| **Scenario** | **Caffeine ($x_1$)** | **Price ($x_2$)** | **Decision ($y$)** | **Reasoning** |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Desperate Monday** | **1.0** (Strong) | **2.0** (Expensive) | **1** (Buy)
-| "I needed energy, ignored price." | 
-| **2. Tourist Trap** | **0.2** (Weak) | **2.0** (Expensive) | **0** (Skip) |
-"Weak AND expensive? No way." | 
-| **3. The Daily Grind** | **1.0** (Strong) | **0.5** (Cheap) | **1** (Buy) |
-"Strong and cheap. Easy yes." | 
+| **1. Desperate Monday** | **1.0** (Strong) | **2.0** (Expensive) | <span style="color:green">**1** (Buy)</span> | "I needed energy, ignored price." |
+| **2. Tourist Trap** | **0.2** (Weak) | **2.0** (Expensive) | <span style="color:red">**0** (Skip)</span> | "Weak AND expensive? No way." |
+| **3. The Daily Grind** | **1.0** (Strong) | **0.5** (Cheap) | <span style="color:green">**1** (Buy)</span> | "Strong and cheap. Easy yes." | 
 
 ### The Initial Weights ($W$) - "Conflicted Personality"
 
