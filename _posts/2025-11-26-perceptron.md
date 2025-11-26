@@ -1,34 +1,48 @@
-# Manual Walkthrough: The Differentiable Perceptron (Sigmoid Neuron)
+# Walkthrough: The Differentiable Perceptron (Sigmoid Neuron coffee decision)
 
 ## Introduction: What You Will Learn
 
-This tutorial bridges the gap between abstract neural network theory and concrete implementation. By dissecting the simplest differentiable unit of Deep Learning—the Sigmoid Neuron—we will manually trace the path of "learning" from a raw error signal back to a specific weight update.
+This tutorial bridges the gap between abstract neural network theory and
+concrete implementation. By dissecting the simplest differentiable unit of Deep
+Learning—the Sigmoid Neuron—we will manually trace the path of "learning" from a
+raw error signal back to a specific weight update.
 
 Specifically, this document covers:
 
-1. **The Mechanics of Learning:** How Forward Propagation (prediction) and Backward Propagation (correction) mathematically interact via the Chain Rule.
+1. **The Mechanics of Learning:** How Forward Propagation (prediction) and
+Backward Propagation (correction) mathematically interact via the Chain Rule.
 
-2. **Batch Processing:** Transitioning from simple vector logic to **Matrix Calculus** ($Z = X \cdot W + b$) to handle entire datasets efficiently.
+2. **Batch Processing:** Transitioning from simple vector logic to **Matrix
+Calculus** ($Z = X \cdot W + b$) to handle entire datasets efficiently.
 
-3. **Manual Verification:** Calculating gradients by hand to demystify what "Autograd" engines do behind the scenes.
+3. **Manual Verification:** Calculating gradients by hand to demystify what
+"Autograd" engines do behind the scenes.
 
-4. **Implementation:** Translating these manual derivation steps directly into PyTorch code to verify our arithmetic.
+4. **Implementation:** Translating these manual derivation steps directly into
+PyTorch code to verify our arithmetic.
 
 ## 1. Intuitive Analogy: "The Coffee Log" (Batch Data)
 
-To understand how a model learns general rules (rather than just reacting to one event), we need a **dataset**. Imagine looking back at your purchase history for three different mornings.
+To understand how a model learns general rules (rather than just reacting to one
+event), we need a **dataset**. Imagine looking back at your purchase history for
+three different mornings.
 
-**The Goal:** Find a set of preferences (Weights) that explains *all* these decisions reasonably well.
+**The Goal:** Find a set of preferences (Weights) that explains *all* these
+decisions reasonably well.
 
 ### The Dataset (Matrix $X$)
 
 We have 3 examples (rows). Each has 2 features (columns).
 
-| **Scenario** | **Feature 1: Caffeine ($x_1$)** | **Feature 2: Price ($x_2$)** | **Decision ($y$)** | **Reasoning** | 
+| **Scenario** | **Feature 1: Caffeine ($x_1$)** | **Feature 2: Price ($x_2$)**
+| **Decision ($y$)** | **Reasoning** | 
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Desperate Monday** | **1.0** (Strong) | **2.0** (Expensive) | **1** (Buy) | "I needed energy, ignored price." | 
-| **2. Tourist Trap** | **0.2** (Weak) | **2.0** (Expensive) | **0** (Skip) | "Weak AND expensive? No way." | 
-| **3. The Daily Grind** | **1.0** (Strong) | **0.5** (Cheap) | **1** (Buy) | "Strong and cheap. Easy yes." | 
+| **1. Desperate Monday** | **1.0** (Strong) | **2.0** (Expensive) | **1** (Buy)
+| "I needed energy, ignored price." | 
+| **2. Tourist Trap** | **0.2** (Weak) | **2.0** (Expensive) | **0** (Skip) |
+"Weak AND expensive? No way." | 
+| **3. The Daily Grind** | **1.0** (Strong) | **0.5** (Cheap) | **1** (Buy) |
+"Strong and cheap. Easy yes." | 
 
 ### The Initial Weights ($W$) - "Conflicted Personality"
 
@@ -42,23 +56,25 @@ Our model starts with the same initial guess as before.
 
 ### The Conflict
 
-* In Scenario 1, the high price ($2.0$) multiplied by the hate for price ($-0.5$) creates a strong negative signal ($-1.0$).
+* In Scenario 1, the high price ($2.0$) multiplied by the hate for price
+* ($-0.5$) creates a strong negative signal ($-1.0$).
 
 * The model currently thinks Monday's coffee is a bad deal.
 
-* **Learning Goal:** The model needs to realize that **Caffeine is more important than Price** to satisfy all 3 examples (since we bought 2/3 coffees).
+* **Learning Goal:** The model needs to realize that **Caffeine is more
+* important than Price** to satisfy all 3 examples (since we bought 2/3
+* coffees).
 
 ## 2. Theoretical Foundation: Matrix Notation
 
-To process multiple examples at once, we switch from vectors ($x$) to matrices ($X$).
+To process multiple examples at once, we switch from vectors ($x$) to matrices
+($X$).
 
 ### 2.1 The Computational Graph (Batch Version)
 
 1. **Linear Aggregation ($Z$):**
 
-$$
-   Z = X \cdot W + b
-$$
+   $$Z = X \cdot W + b$$
 
    * $X$ is shape $(3, 2)$.
 
@@ -70,15 +86,11 @@ $$
 
 2. **Activation ($A$):** Applied element-wise.
 
-$$
-   A = \sigma(Z) = \frac{1}{1 + e^{-Z}}
-$$
+   $$A = \sigma(Z) = \frac{1}{1 + e^{-Z}}$$
 
 3. **Loss ($L$):** Average Mean Squared Error across $N$ examples.
 
-   $$
-   L = \frac{1}{2N} \sum (A - Y)^2
-   $$
+   $$L = \frac{1}{2N} \sum (A - Y)^2$$
 
 ## 3. Experimental Setup (The Matrices)
 
@@ -86,25 +98,15 @@ We translate our "Coffee Log" into PyTorch-style tensors.
 
 **Input Matrix ($X$):**
 
-$$
-X = \begin{bmatrix} 
-1.0 & 2.0 \\ 
-0.2 & 2.0 \\ 
-1.0 & 0.5 
-\end{bmatrix}
-$$
+$$X = \begin{bmatrix} 1.0 & 2.0 \\ 0.2 & 2.0 \\ 1.0 & 0.5 \end{bmatrix}$$
 
 **Target Vector ($Y$):**
 
-$$
-Y = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
-$$
+$$Y = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}$$
 
 **Weights ($W$) & Bias ($b$):**
 
-$$
-W = \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix}, \quad b = 0.0
-$$
+$$W = \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix}, \quad b = 0.0$$
 
 ## 4. Forward Pass (Matrix Multiplication)
 
@@ -112,24 +114,16 @@ $$
 
 We perform the dot product for all 3 days simultaneously.
 
-$$
-Z = \begin{bmatrix} 
-1.0 & 2.0 \\ 
-0.2 & 2.0 \\ 
-1.0 & 0.5 
-\end{bmatrix} 
-\cdot 
-\begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix} 
-+ 0.0
-$$
+$$Z = \begin{bmatrix} 1.0 & 2.0 \\ 0.2 & 2.0 \\ 1.0 & 0.5 \end{bmatrix} \cdot \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix} + 0.0$$
 
-**Row 1 (Monday):** $(1.0 \cdot 0.5) + (2.0 \cdot -0.5) = 0.5 - 1.0 = \mathbf{-0.5}$
-**Row 2 (Trap):** $(0.2 \cdot 0.5) + (2.0 \cdot -0.5) = 0.1 - 1.0 = \mathbf{-0.9}$
-**Row 3 (Daily):** $(1.0 \cdot 0.5) + (0.5 \cdot -0.5) = 0.5 - 0.25 = \mathbf{0.25}$
+**Row 1 (Monday):** $(1.0 \cdot 0.5) + (2.0 \cdot -0.5) = 0.5 - 1.0 =
+\mathbf{-0.5}$
+**Row 2 (Trap):** $(0.2 \cdot 0.5) + (2.0 \cdot -0.5) = 0.1 - 1.0 =
+\mathbf{-0.9}$
+**Row 3 (Daily):** $(1.0 \cdot 0.5) + (0.5 \cdot -0.5) = 0.5 - 0.25 =
+\mathbf{0.25}$
 
-$$
-Z = \begin{bmatrix} -0.5 \\ -0.9 \\ 0.25 \end{bmatrix}
-$$
+$$Z = \begin{bmatrix} -0.5 \\ -0.9 \\ 0.25 \end{bmatrix}$$
 
 ### Step B: Activation ($A = \sigma(Z)$)
 
@@ -139,9 +133,7 @@ We apply the sigmoid function to each score.
 * $\sigma(-0.9) \approx 0.2890$
 * $\sigma(0.25) \approx 0.5621$
 
-$$
-A = \begin{bmatrix} 0.3775 \\ 0.2890 \\ 0.5621 \end{bmatrix}
-$$
+$$A = \begin{bmatrix} 0.3775 \\ 0.2890 \\ 0.5621 \end{bmatrix}$$
 
 ### Step C: Loss Calculation ($L$)
 
@@ -151,24 +143,18 @@ Compare Predictions ($A$) vs Reality ($Y$).
 2. **Trap:** $(0.2890 - 0)^2 = (0.2890)^2 \approx 0.083$
 3. **Daily:** $(0.5621 - 1)^2 = (-0.4379)^2 \approx 0.191$
 
-$$
-L_{total} = \frac{1}{2 \times 3} (0.387 + 0.083 + 0.191) = \frac{0.661}{6} \approx \mathbf{0.110}
-$$
+$$L_{total} = \frac{1}{2 \times 3} (0.387 + 0.083 + 0.191) = \frac{0.661}{6} \approx \mathbf{0.110}$$
 
 ## 5. Backward Pass (Matrix Gradients)
 
-We need to find the "Average Direction" to move the weights to satisfy all three days.
+We need to find the "Average Direction" to move the weights to satisfy all three
+days.
 
 ### Step A: Gradient w.r.t. Activation ($\nabla A$)
 
-$$
-\nabla A = (A - Y)
-$$
+$$\nabla A = (A - Y)$$
 
-$$
-\nabla A = \begin{bmatrix} 0.3775 - 1 \\ 0.2890 - 0 \\ 0.5621 - 1 \end{bmatrix} 
-= \begin{bmatrix} -0.6225 \\ 0.2890 \\ -0.4379 \end{bmatrix}
-$$
+$$\nabla A = \begin{bmatrix} 0.3775 - 1 \\ 0.2890 - 0 \\ 0.5621 - 1 \end{bmatrix} = \begin{bmatrix} -0.6225 \\ 0.2890 \\ -0.4379 \end{bmatrix}$$
 
 *Interpretation:*
 * Row 1 (neg): Prediction was too low. Push UP.
@@ -190,23 +176,14 @@ Recall $\sigma'(z) = a(1-a)$.
    * Trap: $0.2890 \cdot 0.205 \approx \mathbf{0.059}$
    * Daily: $-0.4379 \cdot 0.246 \approx \mathbf{-0.108}$
 
-$$
-\delta = \begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}
-$$
+$$\delta = \begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}$$
 
 ### Step C: Gradient w.r.t. Weights ($\nabla W$)
 
 This is the crucial matrix operation: $X^T \cdot \delta$.
 We check how each feature contributed to the error across all examples.
 
-$$
-\nabla W = \begin{bmatrix} 
-1.0 & 0.2 & 1.0 \\ 
-2.0 & 2.0 & 0.5 
-\end{bmatrix} 
-\cdot 
-\begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}
-$$
+$$\nabla W = \begin{bmatrix} 1.0 & 0.2 & 1.0 \\ 2.0 & 2.0 & 0.5 \end{bmatrix} \cdot \begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}$$
 
 1. **For Caffeine ($w_1$):**
    $(1.0 \cdot -0.146) + (0.2 \cdot 0.059) + (1.0 \cdot -0.108)$
@@ -216,7 +193,8 @@ $$
    $(2.0 \cdot -0.146) + (2.0 \cdot 0.059) + (0.5 \cdot -0.108)$
    $= -0.292 + 0.118 - 0.054 = \mathbf{-0.228}$
 
-*(Note: We divide by $N=3$ usually, but for this manual trace we keep the sum or divide at the update step).*
+*(Note: We divide by $N=3$ usually, but for this manual trace we keep the sum or
+divide at the update step).*
 
 ### Step D: Gradient w.r.t Bias ($\nabla b$)
 
@@ -229,27 +207,29 @@ $\eta = 0.1$. Let's use the sums calculated above.
 
 ### Update Caffeine Weight ($w_1$)
 
-$$
-w_{1,new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = \mathbf{0.5242}
-$$
+$$w_{1,new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = \mathbf{0.5242}$$
 
-**Reasoning:** Even though we bought 2/3 coffees, the model realized that Caffeine was present in both "Buy" scenarios. The gradient is negative (meaning "Loss goes down if Weight goes up"), so we increase the weight.
+**Reasoning:** Even though we bought 2/3 coffees, the model realized that
+Caffeine was present in both "Buy" scenarios. The gradient is negative (meaning
+"Loss goes down if Weight goes up"), so we increase the weight.
 
 ### Update Price Weight ($w_2$)
 
-$$
-w_{2,new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = \mathbf{-0.4772}
-$$
+$$w_{2,new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = \mathbf{-0.4772}$$
 
-**Reasoning:** The model realized that a high negative weight ($-0.5$) was causing too much error on Monday (Desperate Monday). It slightly reduces the penalty for price (makes it less negative) to accommodate that purchase.
+**Reasoning:** The model realized that a high negative weight ($-0.5$) was
+causing too much error on Monday (Desperate Monday). It slightly reduces the
+penalty for price (makes it less negative) to accommodate that purchase.
 
 ### Conclusion
 
-By processing the matrix, the model learned to **prioritize Caffeine more** and **penalize Price slightly less** to fit the aggregated behavior of the user.
+By processing the matrix, the model learned to **prioritize Caffeine more** and
+**penalize Price slightly less** to fit the aggregated behavior of the user.
 
 ## 7. Code Verification & Execution Trace
 
-The following Python script implements the matrices exactly as defined in **Section 3** and executes one step of learning.
+The following Python script implements the matrices exactly as defined in
+**Section 3** and executes one step of learning.
 
 ```python
 import torch
