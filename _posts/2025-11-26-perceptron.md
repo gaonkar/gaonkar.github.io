@@ -136,9 +136,7 @@ $$
 We apply the sigmoid function to each score.
 
 * $\sigma(-0.5) \approx 0.3775$
-
 * $\sigma(-0.9) \approx 0.2890$
-
 * $\sigma(0.25) \approx 0.5621$
 
 $$
@@ -150,9 +148,7 @@ $$
 Compare Predictions ($A$) vs Reality ($Y$).
 
 1. **Monday:** $(0.3775 - 1)^2 = (-0.6225)^2 \approx 0.387$
-
 2. **Trap:** $(0.2890 - 0)^2 = (0.2890)^2 \approx 0.083$
-
 3. **Daily:** $(0.5621 - 1)^2 = (-0.4379)^2 \approx 0.191$
 
 $$
@@ -175,11 +171,8 @@ $$
 $$
 
 *Interpretation:*
-
 * Row 1 (neg): Prediction was too low. Push UP.
-
 * Row 2 (pos): Prediction was too high. Push DOWN.
-
 * Row 3 (neg): Prediction was too low. Push UP.
 
 ### Step B: Gradient w.r.t. Z ($\delta$)
@@ -188,19 +181,13 @@ Element-wise multiplication: $\delta = \nabla A \odot \sigma'(Z)$.
 Recall $\sigma'(z) = a(1-a)$.
 
 1. **Sigmoid Derivatives:**
-
    * $0.3775 \cdot (1 - 0.3775) \approx 0.235$
-
    * $0.2890 \cdot (1 - 0.2890) \approx 0.205$
-
    * $0.5621 \cdot (1 - 0.5621) \approx 0.246$
 
 2. **Chain Rule:**
-
    * Monday: $-0.6225 \cdot 0.235 \approx \mathbf{-0.146}$
-
    * Trap: $0.2890 \cdot 0.205 \approx \mathbf{0.059}$
-
    * Daily: $-0.4379 \cdot 0.246 \approx \mathbf{-0.108}$
 
 $$
@@ -243,7 +230,7 @@ $\eta = 0.1$. Let's use the sums calculated above.
 ### Update Caffeine Weight ($w_1$)
 
 $$
-w_{1\_new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = \mathbf{0.5242}
+w_{1,new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = \mathbf{0.5242}
 $$
 
 **Reasoning:** Even though we bought 2/3 coffees, the model realized that Caffeine was present in both "Buy" scenarios. The gradient is negative (meaning "Loss goes down if Weight goes up"), so we increase the weight.
@@ -251,7 +238,7 @@ $$
 ### Update Price Weight ($w_2$)
 
 $$
-w_{2\_new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = \mathbf{-0.4772}
+w_{2,new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = \mathbf{-0.4772}
 $$
 
 **Reasoning:** The model realized that a high negative weight ($-0.5$) was causing too much error on Monday (Desperate Monday). It slightly reduces the penalty for price (makes it less negative) to accommodate that purchase.
