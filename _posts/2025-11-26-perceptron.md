@@ -56,9 +56,9 @@ To process multiple examples at once, we switch from vectors ($x$) to matrices (
 
 1. **Linear Aggregation ($Z$):**
 
-   $$
+$$
    Z = X \cdot W + b
-   $$
+$$
 
    * $X$ is shape $(3, 2)$.
 
@@ -70,9 +70,9 @@ To process multiple examples at once, we switch from vectors ($x$) to matrices (
 
 2. **Activation ($A$):** Applied element-wise.
 
-   $$
+$$
    A = \sigma(Z) = \frac{1}{1 + e^{-Z}}
-   $$
+$$
 
 3. **Loss ($L$):** Average Mean Squared Error across $N$ examples.
 
