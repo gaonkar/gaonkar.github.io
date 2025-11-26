@@ -1,5 +1,4 @@
-## Walkthrough: The Differentiable Perceptron (Sigmoid Neuron)
-
+# Walkthrough: The Differentiable Perceptron (Sigmoid Neuron)
 This tutorial bridges the gap between abstract neural network theory and concrete implementation. By dissecting the simplest differentiable unit of Deep Learning—the Sigmoid Neuron—we will manually trace the path of "learning" from a raw error signal back to a specific weight update.
 
 Specifically, this document covers:
@@ -50,9 +49,9 @@ To process multiple examples at once, we switch from vectors (x) to matrices (X)
 
 1. **Linear Aggregation (Z):**
 
-```math
+$$
 Z = X \cdot W + b
-```
+$$
 
    * X is shape (3, 2).
    * W is shape (2, 1).
@@ -61,15 +60,15 @@ Z = X \cdot W + b
 
 2. **Activation (A):** Applied element-wise.
 
-```math
+$$
 A = \sigma(Z) = \frac{1}{1 + e^{-Z}}
-```
+$$
 
 3. **Loss (L):** Average Mean Squared Error across N examples.
 
-```math
+$$
 L = \frac{1}{2N} \sum (A - Y)^2
-```
+$$
 
 ## 3. Experimental Setup (The Matrices)
 
@@ -77,21 +76,21 @@ We translate our "Coffee Log" into PyTorch-style tensors.
 
 **Input Matrix (X):**
 
-```math
+$$
 X = \begin{bmatrix} 1.0 & 2.0 \\ 0.2 & 2.0 \\ 1.0 & 0.5 \end{bmatrix}
-```
+$$
 
 **Target Vector (Y):**
 
-```math
+$$
 Y = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
-```
+$$
 
 **Weights (W) & Bias (b):**
 
-```math
+$$
 W = \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix}, \quad b = 0.0
-```
+$$
 
 ## 4. Forward Pass (Matrix Multiplication)
 
@@ -99,9 +98,9 @@ W = \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix}, \quad b = 0.0
 
 We perform the dot product for all 3 days simultaneously.
 
-```math
+$$
 Z = \begin{bmatrix} 1.0 & 2.0 \\ 0.2 & 2.0 \\ 1.0 & 0.5 \end{bmatrix} \cdot \begin{bmatrix} 0.5 \\ -0.5 \end{bmatrix} + 0.0
-```
+$$
 
 **Row 1 (Monday):** (1.0 · 0.5) + (2.0 · -0.5) = 0.5 - 1.0 = **-0.5**
 
@@ -109,9 +108,9 @@ Z = \begin{bmatrix} 1.0 & 2.0 \\ 0.2 & 2.0 \\ 1.0 & 0.5 \end{bmatrix} \cdot \beg
 
 **Row 3 (Daily):** (1.0 · 0.5) + (0.5 · -0.5) = 0.5 - 0.25 = **0.25**
 
-```math
+$$
 Z = \begin{bmatrix} -0.5 \\ -0.9 \\ 0.25 \end{bmatrix}
-```
+$$
 
 ### Step B: Activation (A = σ(Z))
 
@@ -121,9 +120,9 @@ We apply the sigmoid function to each score.
 * σ(-0.9) ≈ 0.2890
 * σ(0.25) ≈ 0.5621
 
-```math
+$$
 A = \begin{bmatrix} 0.3775 \\ 0.2890 \\ 0.5621 \end{bmatrix}
-```
+$$
 
 ### Step C: Loss Calculation (L)
 
@@ -133,9 +132,9 @@ Compare Predictions (A) vs Reality (Y).
 2. **Trap:** (0.2890 - 0)² = (0.2890)² ≈ 0.083
 3. **Daily:** (0.5621 - 1)² = (-0.4379)² ≈ 0.191
 
-```math
-L_{total} = \frac{1}{2 \times 3} (0.387 + 0.083 + 0.191) = \frac{0.661}{6} \approx \mathbf{0.110}
-```
+$$
+L_{total} = \frac{1}{2 \times 3} (0.387 + 0.083 + 0.191) = \frac{0.661}{6} \approx 0.110
+$$
 
 ## 5. Backward Pass (Matrix Gradients)
 
@@ -143,13 +142,13 @@ We need to find the "Average Direction" to move the weights to satisfy all three
 
 ### Step A: Gradient w.r.t. Activation (∇A)
 
-```math
+$$
 \nabla A = (A - Y)
-```
+$$
 
-```math
+$$
 \nabla A = \begin{bmatrix} 0.3775 - 1 \\ 0.2890 - 0 \\ 0.5621 - 1 \end{bmatrix} = \begin{bmatrix} -0.6225 \\ 0.2890 \\ -0.4379 \end{bmatrix}
-```
+$$
 
 *Interpretation:*
 * Row 1 (neg): Prediction was too low. Push UP.
@@ -172,9 +171,9 @@ Recall σ'(z) = a(1-a).
    * Trap: 0.2890 · 0.205 ≈ **0.059**
    * Daily: -0.4379 · 0.246 ≈ **-0.108**
 
-```math
+$$
 \delta = \begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}
-```
+$$
 
 ### Step C: Gradient w.r.t. Weights (∇W)
 
@@ -182,9 +181,9 @@ This is the crucial matrix operation: Xᵀ · δ.
 
 We check how each feature contributed to the error across all examples.
 
-```math
+$$
 \nabla W = \begin{bmatrix} 1.0 & 0.2 & 1.0 \\ 2.0 & 2.0 & 0.5 \end{bmatrix} \cdot \begin{bmatrix} -0.146 \\ 0.059 \\ -0.108 \end{bmatrix}
-```
+$$
 
 1. **For Caffeine (w₁):**
    (1.0 · -0.146) + (0.2 · 0.059) + (1.0 · -0.108)
@@ -208,17 +207,17 @@ Sum of δ.
 
 ### Update Caffeine Weight (w₁)
 
-```math
-w_{1,new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = \mathbf{0.5242}
-```
+$$
+w_{1,new} = 0.5 - 0.1(-0.242) = 0.5 + 0.0242 = 0.5242
+$$
 
 **Reasoning:** Even though we bought 2/3 coffees, the model realized that Caffeine was present in both "Buy" scenarios. The gradient is negative (meaning "Loss goes down if Weight goes up"), so we increase the weight.
 
 ### Update Price Weight (w₂)
 
-```math
-w_{2,new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = \mathbf{-0.4772}
-```
+$$
+w_{2,new} = -0.5 - 0.1(-0.228) = -0.5 + 0.0228 = -0.4772
+$$
 
 **Reasoning:** The model realized that a high negative weight (-0.5) was causing too much error on Monday (Desperate Monday). It slightly reduces the penalty for price (makes it less negative) to accommodate that purchase.
 
