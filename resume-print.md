@@ -34,7 +34,7 @@ title: Resume
 * Developed key components of a distributed clustered storage system, USPTO:9965203
 * Developed inline highly efficient deduplication based on zipf distribution, USPTO:10019459
 * Developed scalable distributed garbage collection using bloom filter, USPTO:9448927
-* Disaster Recovery (DR)
+* Architected Disaster Recovery (DR) for multi-data center replication
 * Developed QOS for bandwidth management and data rate auto-tuning, USPTO:10911372
 * Rolled out Data At Rest Encryption for 5000 customers/ 20,000 clusters
 
