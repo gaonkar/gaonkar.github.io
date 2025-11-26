@@ -1,5 +1,4 @@
-
-## What You Will Learn
+## From Attention Basics to Memory-Efficient Implementation
 
 This document provides a ground-up explanation of the attention mechanism and Flash Attention, with fully worked numerical examples you can verify by hand.
 
@@ -58,9 +57,9 @@ The attention mechanism:
 
 ### The Mathematical Formulation
 
-$$
+```math
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V
-$$
+```
 
 Where:
 - Q ∈ ℝ^(N × d) — N tokens, d-dimensional queries
@@ -99,9 +98,9 @@ We chose V with distinct values so we can trace which tokens contribute to the o
 
 Each element S_ij measures how much token i's query matches token j's key:
 
-$$
+```math
 S_{ij} = Q_i \cdot K_j = \sum_{k} Q_{ik} \cdot K_{jk}
-$$
+```
 
 **Computing Row 0 of S** (Query = [1,0,1,0]):
 
@@ -127,9 +126,9 @@ S = QKᵀ = | 1  0  2  0 |
 
 Softmax converts scores to probabilities (each row sums to 1):
 
-$$
+```math
 P_{ij} = \frac{e^{S_{ij}}}{\sum_{k} e^{S_{ik}}}
-$$
+```
 
 Using e⁰ = 1, e¹ ≈ 2.718, e² ≈ 7.389:
 
@@ -156,9 +155,9 @@ P = | 0.224  0.083  0.610  0.083 |
 
 Each output row is a weighted combination of value rows:
 
-$$
+```math
 O_i = \sum_{j} P_{ij} \cdot V_j
-$$
+```
 
 **Row 0:**
 ```
@@ -197,35 +196,35 @@ Backward pass flows gradients in reverse: dO → dP → dS → dQ, dK, and dO �
 
 **Step 1: Gradient w.r.t. V**
 
-$$
+```math
 dV = P^T \cdot dO
-$$
+```
 
 **Step 2: Gradient w.r.t. P**
 
-$$
+```math
 dP = dO \cdot V^T
-$$
+```
 
 **Step 3: Gradient w.r.t. S** (through softmax)
 
-$$
+```math
 D_i = \sum_j P_{ij} \cdot dP_{ij}
-$$
+```
 
-$$
+```math
 dS_{ij} = P_{ij} \cdot (dP_{ij} - D_i)
-$$
+```
 
 **Step 4: Gradients w.r.t. Q and K**
 
-$$
+```math
 dQ = dS \cdot K
-$$
+```
 
-$$
+```math
 dK = dS^T \cdot Q
-$$
+```
 
 ### Concrete Example: Computing All Gradients
 
@@ -392,9 +391,9 @@ But wait—softmax needs to see *all* scores in a row to compute the normalizing
 
 Softmax requires the sum over *all* elements:
 
-$$
+```math
 P_{ij} = \frac{e^{S_{ij}}}{\sum_{k=1}^{N} e^{S_{ik}}}
-$$
+```
 
 If we only see scores [S_i,0, S_i,1] first, then later [S_i,2, S_i,3], how can we get the correct result?
 
@@ -402,9 +401,9 @@ If we only see scores [S_i,0, S_i,1] first, then later [S_i,2, S_i,3], how can w
 
 We want to compute:
 
-$$
+```math
 O_i = \frac{\sum_{j} e^{S_{ij}} \cdot V_j}{\sum_k e^{S_{ik}}} = \frac{\text{numerator}}{\text{denominator}}
-$$
+```
 
 > **Key Insight:** **Both numerator and denominator can be accumulated incrementally!**
 > - Track running sum: ℓ = Σⱼ exp(S_ij - m) (denominator, shifted by max)
@@ -549,9 +548,9 @@ Standard backprop needs the P matrix. But we didn't store it!
 
 > **Key Insight:** We stored m and ℓ (only O(N) memory). From these, we can **recompute** any tile:
 >
-> $$
+> ```math
 > P_{ij} = \frac{e^{S_{ij} - m_i}}{\ell_i}
-> $$
+> ```
 >
 > We trade extra compute for memory savings. Since GPUs are memory-bound, this is a good trade!
 
