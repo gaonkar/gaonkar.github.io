@@ -36,7 +36,7 @@ title: Resume
 * Developed scalable distributed garbage collection using bloom filter, USPTO:9448927
 * Disaster Recovery (DR)
 * Developed QOS for bandwidth management and data rate auto-tuning, USPTO:10911372
-* Data At Rest Encryption
+* Rolled out Data At Rest Encryption for 5000 customers/ 20,000 clusters
 
 ---
 
@@ -45,7 +45,7 @@ title: Resume
 *COURTESY Professor@CISE*
 
 * An attempt to do academic research with 0$ funding (slow progress)
-* Mentor graduate PhD student
+* Mentor graduate PhD student and published joint paper on [Multi-Armed Bandit for Caching](https://ieeexplore.ieee.org/document/9394359)
 * Instruct [EEL-4736](https://www.ece.ufl.edu/wp-content/uploads/syllabi/Fall2021/EEL4736_Princ_Comp_Sys_Desi_Figueiredo_Fall_2021.pdf) when required
 
 ---
@@ -53,8 +53,6 @@ title: Resume
 **Atlantis Computing** (May 2011 - Aug 2012)
 
 * Ensured improvement of performance (5x), reliability (raised to 5 9s), and scalability (1000s of desktop virtual machines) to the core deduplication based EXT3 filesystem of Atlantis ILIO
-* Developed integrity tools to verify ILIO filesystem consistency
-* Designed and productized new features (ILIO fastclone) that resulted in new product lines
 * Provided authoritative advice to CEO and CTO on technical matters
 * Led/mentored the entire development team (15+ engineers) (platform, control plane, UI and UX)
 
