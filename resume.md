@@ -9,9 +9,14 @@ title: Resume
 
 **Airbnb** (Dec 2022 - Present)
 
+* 2026 - ML Infrastructure: LLM Gateway
+    *  Led with a team the design and delivery, in 8 weeks, of a unified vendor-agnostic LLM gateway: teams call a model by name, and moving it between vendors is a reviewed config change instead of a multi-team project
+    *  Centralized rate limiting, cost attribution, and region/compliance enforcement for 120M+ weekly requests, projected to bend the LLM cost curve by 40%
+
 * 2025 - ML Infrastructure: Inference 
-    *  Designed and orchestrated(WIP) multi-cluster Blue-Green migration for 500+ ml models with 0 downtime
-    *  Engineered adaptive failure over strategy for migration with minimal client side latency impact 
+    *  Solely designed and led the core multi-cluster Blue-Green migration of 1000+ ML models to production with zero downtime
+    *  Built an LLM-assisted auto-migration scaffold that automated moving models onto the new clusters
+    *  Engineered adaptive failover strategy for the migration, with minimal client-side latency impact
 
 * 2023 - 2024: Storage Infrastructure
   * [From Static Rate Limiting to Adaptive Traffic Management in Airbnb's Key-Value Store](https://medium.com/airbnb-engineering/from-static-rate-limiting-to-adaptive-traffic-management-in-airbnbs-key-value-store-29362764e5c2)

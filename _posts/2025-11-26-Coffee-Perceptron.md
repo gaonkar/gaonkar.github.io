@@ -271,7 +271,7 @@ def verify_batch_perceptron():
     # Step C: Loss (Mean Squared Error)
     # Note: PyTorch MSELoss divides by N=3 by default
     loss_fn = nn.MSELoss()
-    loss = loss_fn(A, Y)
+    loss = loss_fn(A, Y) / 2.0
     print(f"Average Loss: {loss.item():.4f}")
 
     print("\n--- 3. Backward Pass ---")
